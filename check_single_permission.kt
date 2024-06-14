@@ -48,11 +48,12 @@ inline fun rememberReadExternalStorageRequestLauncher(crossinline onResult: (Boo
         storageAccess = context.checkReadExternalStorageAccess()
     }
    
-    when(storageAccess)
+    when(storageAccess){
     true->{
         // do something base on your need
     }
     false ->{
         storageAccessLauncher.requestReadExternalStorageAccess()
     }
+   }
    }

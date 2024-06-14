@@ -31,10 +31,8 @@ inline fun rememberLocationRequestLauncher(crossinline onResult: (Boolean) -> Un
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { grantResults ->
-            val locationAccess = if (grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] ==  true   || grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] == true  )  true
-                                    else   false
-            
-                              onResult(locationAccess)
+            val locationAccess = if (grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] ==  true   || grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] == true  )  true else   false
+             onResult(locationAccess)
         },
     )                    
    return LocationAccessRequestLauncher(launcher)

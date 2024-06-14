@@ -1,10 +1,11 @@
-// extention function for checking permision is granted or not
+// extention function for checking permission is granted or not
 fun Context.checkPermissionGranted(permission: String): Boolean =
     ContextCompat.checkSelfPermission(
         this,
         permission
     ) == PackageManager.PERMISSION_GRANTED
 
+    
 
 enum class LocationAccess {
     Granted,

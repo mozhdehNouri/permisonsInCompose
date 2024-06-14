@@ -1,4 +1,4 @@
 Customize permissions with Activity Result APIs in compose android 
  - Impelement multiple permission check
- - Impelement check in diffrent Android Api
+ - Impelement permission check in diffrent android apis
  - Implement single permission check

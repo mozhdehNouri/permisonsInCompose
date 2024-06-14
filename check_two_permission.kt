@@ -55,11 +55,12 @@ inline fun rememberLocationRequestLauncher(crossinline onResult: (Boolean) -> Un
         locationAccess = context.checkLocationAccess()
     }
    
-    when(locationAccess)
+    when(locationAccess){
     true->{
         // do something base on your need
     }
     false ->{
         locationAccessLauncher.requestLocationAccess()
     }
+   }
    }

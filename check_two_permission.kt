@@ -1,4 +1,4 @@
-// extention function for checking permission is granted or not
+// extension function  for checking permission is granted or not
 fun Context.checkPermissionGranted(permission: String): Boolean =
     ContextCompat.checkSelfPermission(
         this,

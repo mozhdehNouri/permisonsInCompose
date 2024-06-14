@@ -7,7 +7,7 @@ fun Context.checkPermissionGranted(permission: String): Boolean =
 
 
 // check location permission is granted or not
-fun Context.checkLocationAccess1(): Boolean =
+fun Context.checkLocationAccess(): Boolean =
     checkPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) ||
         checkPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
 
@@ -27,24 +27,18 @@ value class LocationAccessRequestLauncher(private val launcher: ActivityResultLa
 
 // make customize rememberLauncherForActivityResult base on your permission
 @Composable
-inline fun rememberLocationRequestLauncher(crossinline onResult: (Boolean) -> Unit):
-        LocationAccessRequestLauncher {
+inline fun rememberLocationRequestLauncher(crossinline onResult: (Boolean) -> Unit): LocationAccessRequestLauncher {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { grantResults ->
-            val locationAccess = if (grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] ==
-                true ||
-                grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] == true
-            ) {
-                true
-            } else {
-               false
-            }
-            onResult(locationAccess)
+            val locationAccess = if (grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] ==  true   || grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] == true  )  true
+                                    else   false
+            
+                              onResult(locationAccess)
         },
     )                    
    return LocationAccessRequestLauncher(launcher)
-
+}
 
 
 
@@ -53,17 +47,17 @@ inline fun rememberLocationRequestLauncher(crossinline onResult: (Boolean) -> Un
    @Composable
    fun CheckPermission(){
     val context = LocalContext.current.applicationContext
-    var locationAccess by remember { mutableStateOf(context.checkMediaAccess()) }
+    var locationAccess by remember { mutableStateOf(context.checkLocationAccess()) }
     val locationAccessLauncher = rememberLocationRequestLauncher { result ->
         locationAccess = result
     }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        mediaAccess = context.checkLocationAccess()
+        locationAccess = context.checkLocationAccess()
     }
    
     when(locationAccess)
     true->{
-        // do something base on your code
+        // do something base on your need
     }
     false ->{
         locationAccessLauncher.requestLocationAccess()

@@ -1,0 +1,49 @@
+// extention function for checking permision is granted or not
+fun Context.checkPermissionGranted(permission: String): Boolean =
+    ContextCompat.checkSelfPermission(
+        this,
+        permission
+    ) == PackageManager.PERMISSION_GRANTED
+
+
+enum class LocationAccess {
+    Granted,
+    Denied
+}
+
+fun Context.checkMediaAccess(): LocationAccess =
+    if (checkPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) ||
+        checkPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+    ) LocationAccess.Granted
+    else LocationAccess.Denied
+
+@JvmInline
+value class LocationAccessRequestLauncher(private val launcher: ActivityResultLauncher<Array<String>>) {
+    fun requestLocationAccess() {
+        launcher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+    }
+}
+
+@Composable
+inline fun rememberLocationRequestLauncher(crossinline onResult: (LocationAccess) -> Unit):
+        LocationAccessRequestLauncher {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+        onResult = { grantResults ->
+            val locationAccess = if (grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] ==
+                true ||
+                grantResults[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+            ) {
+                LocationAccess.Granted
+            } else {
+                LocationAccess.Denied
+            }
+            onResult(locationAccess)
+        },
+    )
+    re

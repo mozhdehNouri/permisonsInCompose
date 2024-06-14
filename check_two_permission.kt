@@ -7,11 +7,9 @@ fun Context.checkPermissionGranted(permission: String): Boolean =
 
 
 // check location permission is granted or not
-fun Context.checkLocationAccess(): Boolean =
-    if (checkPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) ||
+fun Context.checkLocationAccess1(): Boolean =
+    checkPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) ||
         checkPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
-    ) true
-    else false
 
 
 // if permission is not granted, send permission request

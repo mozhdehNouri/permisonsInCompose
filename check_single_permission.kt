@@ -14,7 +14,7 @@ fun Context.checkReadExternalStorageAccess(): Boolean =
 // if permission is not granted, send permission request
 @JvmInline
 value class ReadExternalStorageAccessRequestLauncher(private val launcher: ActivityResultLauncher<String>) {
-    fun readExternalStorageAccess() {
+    fun requestReadExternalStorageAccess() {
         launcher.launch(
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
@@ -32,3 +32,27 @@ inline fun rememberReadExternalStorageRequestLauncher(crossinline onResult: (Boo
     )
     return ReadExternalStorageAccessRequestLauncher(launcher)
 }
+
+
+
+// usage in compose
+// usage in composable function 
+   @Composable
+   fun CheckPermission(){
+    val context = LocalContext.current.applicationContext
+    var storageAccess by remember { mutableStateOf(context.checkReadExternalStorageAccess()) }
+    val storageAccessLauncher = rememberReadExternalStorageRequestLauncher { result ->
+        storageAccess = result
+    }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        storageAccess = context.checkReadExternalStorageAccess()
+    }
+   
+    when(storageAccess)
+    true->{
+        // do something base on your need
+    }
+    false ->{
+        storageAccessLauncher.requestReadExternalStorageAccess()
+    }
+   }
